@@ -1,6 +1,7 @@
 package model.entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Produtos implements Serializable{
 	
@@ -74,8 +75,28 @@ public class Produtos implements Serializable{
 		this.precvenda = precvenda;
 	}
 
+	
 
 	
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(descricao);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Produtos other = (Produtos) obj;
+		return Objects.equals(descricao, other.descricao);
+	}
+
 	@Override
 	public String toString() {
 		return "Produtos [id=" + id + ", descricao=" + descricao + ", unid=" + unid + ", qtd=" + qtd + ", preccompra="

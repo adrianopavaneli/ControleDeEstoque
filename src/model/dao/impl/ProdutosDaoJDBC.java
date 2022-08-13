@@ -6,41 +6,38 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import db.DB;
 import db.DbException;
+import db.DbIntegrityException;
 import model.dao.ProdutosDao;
 import model.entities.Produtos;
 
-
 public class ProdutosDaoJDBC implements ProdutosDao {
-
-	private Connection conn;
+	
+private Connection conn;
 	
 	public ProdutosDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
-	
+
 	@Override
 	public void insert(Produtos prod) {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-					"INSERT INTO seller "
-					+ "(descricao, unid, qtd, preccompra, precvenda) "
-					+ "VALUES "
-					+ "(?, ?, ?, ?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
-			
+				"INSERT INTO produtos " +
+				"(descricao, unid, qtd, preccompra, precvenda) " +
+				"VALUES " +
+				"(?,?,?,?,?)", 
+				Statement.RETURN_GENERATED_KEYS);
+
 			st.setString(1, prod.getDescricao());
 			st.setString(2, prod.getUnid());
-			st.setInt(3, prod.getQtd()); 
+			st.setInt(3, prod.getQtd());
 			st.setDouble(4, prod.getPreccompra());
 			st.setDouble(5, prod.getPrecvenda());
-			
 			
 			int rowsAffected = st.executeUpdate();
 			
@@ -50,7 +47,6 @@ public class ProdutosDaoJDBC implements ProdutosDao {
 					int id = rs.getInt(1);
 					prod.setId(id);
 				}
-				DB.closeResultSet(rs);
 			}
 			else {
 				throw new DbException("Unexpected error! No rows affected!");
@@ -58,10 +54,11 @@ public class ProdutosDaoJDBC implements ProdutosDao {
 		}
 		catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
+		} 
 		finally {
 			DB.closeStatement(st);
 		}
+		
 	}
 
 	@Override
@@ -69,44 +66,44 @@ public class ProdutosDaoJDBC implements ProdutosDao {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-					"UPDATE produtos "
-					+ "SET descricao = ?, unid = ?, qtd = ?, preccompra = ?, precvenda = ? "
-					+ "WHERE Id = ?");
-			
+				"UPDATE produtos " +
+				"SET descricao = ? " +
+				"WHERE Id = ?");
+
 			st.setString(1, prod.getDescricao());
-			st.setString(2, prod.getUnid());
-			st.setInt(3, prod.getQtd());
-			st.setDouble(4, prod.getPreccompra());
-			st.setDouble(4, prod.getPrecvenda());
-			st.setInt(6, prod.getId());
-			
+			st.setInt(2, prod.getId());
+
 			st.executeUpdate();
 		}
 		catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
+		} 
 		finally {
 			DB.closeStatement(st);
 		}
+		
 	}
 
 	@Override
 	public void deleteById(Integer id) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement("DELETE FROM produtos WHERE Id = ?");
-			
+			st = conn.prepareStatement(
+				"DELETE FROM produtos WHERE Id = ?");
+
 			st.setInt(1, id);
-			
+
 			st.executeUpdate();
 		}
 		catch (SQLException e) {
-			throw new DbException(e.getMessage());
-		}
+			throw new DbIntegrityException(e.getMessage());
+		} 
 		finally {
 			DB.closeStatement(st);
 		}
 	}
+		
+	
 
 	@Override
 	public Produtos findById(Integer id) {
@@ -114,16 +111,14 @@ public class ProdutosDaoJDBC implements ProdutosDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT produtos.* "
-					+ "FROM produtos INNER JOIN produtos "
-					
-					+ "WHERE produtos.Id = ?");
-			
+				"SELECT * FROM produtos WHERE Id = ?");
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if (rs.next()) {
-//				Produtos prod = instantiateProdutos(obj);				
-//				return prod;
+				Produtos prod = new Produtos();
+				prod.setId(rs.getInt("Id"));
+				prod.setDescricao(rs.getString("descricao"));
+				return prod;
 			}
 			return null;
 		}
@@ -136,45 +131,22 @@ public class ProdutosDaoJDBC implements ProdutosDao {
 		}
 	}
 
-	private Produtos instantiateProdutos(ResultSet rs, Produtos prod) throws SQLException {
-		Produtos obj = new Produtos();
-		prod.setId(rs.getInt("id"));
-		prod.setDescricao(rs.getString("descricao"));
-		prod.setUnid(rs.getString("unid"));
-		prod.setPreccompra(rs.getDouble("preccompra"));
-		prod.setPrecvenda(rs.getDouble("precvenda"));
-		return obj;
-	}
-
-	
-
 	@Override
 	public List<Produtos> findAll() {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT produtos.* "
-					+ "FROM produtos INNER JOIN produtos "
-					
-					+ "ORDER BY descricao");
-			
+				"SELECT * FROM produtos ORDER BY descricao");
 			rs = st.executeQuery();
-			
+
 			List<Produtos> list = new ArrayList<>();
-			Map<Integer, Produtos> map = new HashMap<>();
-			
+
 			while (rs.next()) {
-				
-				Produtos prod = map.get(rs.getInt("id"));
-				
-				if (prod == null) {
-//					prod = instantiateProdutos(rs);
-//					map.put(rs.getInt("id"), prod);
-				}
-				
-				Produtos obj = instantiateProdutos(rs, prod);
-				list.add(obj);
+				Produtos prod = new Produtos();
+				prod.setId(rs.getInt("id"));
+				prod.setDescricao(rs.getString("descricao"));
+				list.add(prod);
 			}
 			return list;
 		}
@@ -186,11 +158,5 @@ public class ProdutosDaoJDBC implements ProdutosDao {
 			DB.closeResultSet(rs);
 		}
 	}
+
 }
-
-
-	
-
-	
-
-	

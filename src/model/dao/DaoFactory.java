@@ -6,11 +6,9 @@ import model.dao.impl.ProdutosDaoJDBC;
 
 public class DaoFactory {
 
-	public static ProdutosDao createSellerDao() {
+	public static ProdutosDao createProdutosDao() {
 		return new ProdutosDaoJDBC(DB.getConnection());
 	}
 	
-	public static ProdutosDao createDepartmentDao() {
-		return new ProdutosDaoJDBC(DB.getConnection());
-	}
+
 }
