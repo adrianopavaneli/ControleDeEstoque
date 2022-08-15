@@ -31,7 +31,7 @@ public class Program  {
 		System.out.println("Inserted! New id = " + newprod.getId());
 	
 		System.out.println("\n=== TEST 5: seller update =====");
-		produtos = produtosDao.findById(2);
+		produtos = produtosDao.findById(3);
 		produtos.setDescricao("carro");
 		produtosDao.update(produtos);
 		System.out.println("Update completed");
