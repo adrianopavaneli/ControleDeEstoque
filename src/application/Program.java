@@ -1,49 +1,108 @@
-//package application;
-//
-//import java.util.Date;
-//import java.util.List;
-//import java.util.Scanner;
-//
-//import model.dao.DaoFactory;
-//import model.dao.ProdutosDao;
-//import model.entities.Produtos;
-//
-//public class Program  {
-//	public static void main(String[] args) {
-//	
-//		Scanner sc = new Scanner(System.in);
-//		ProdutosDao produtosDao = DaoFactory.createProdutosDao();
+package application;
+
+import java.util.Scanner;
+
+import model.dao.DaoFactory;
+import model.dao.ProdutosDao;
+import model.entities.Produtos;
+
+public class Program {
+	public static void main(String[] args) {
+
+		Scanner sc = new Scanner(System.in);
+		ProdutosDao produtosDao = DaoFactory.createProdutosDao();
+
+		char n = 's';
+//		while(n == 's') {
+//			
+//		System.out.println("INSERIR PRODUTO:");
+//		System.out.println("Digite a descrição do produto:");
 //		
-//		
-//		System.out.println("==========Teste1===========");
-//		Produtos produtos = produtosDao.findById(1);
-//		System.out.println(produtos);
-//	
-//		
-//		
-//		
-//		
-//
-//		
-//		System.out.println("\n=== TEST 4: seller insert =====");
-//		Produtos newprod = new Produtos(0, "porca", "peca", 10, 8.00, 16.00);
+//		String descricao =sc.nextLine();
+//		sc.nextLine();
+//		System.out.println("Digite a unidade de medida do produto:");
+//		String unid =sc.nextLine();
+//		System.out.println("Digite a quantidade em estoque do produto:");
+//		int qtd =sc.nextInt();
+//		System.out.println("Digite o valor de compra do produto:");
+//		double valorCompra =sc.nextDouble();
+//		System.out.println("Digite o valor de venda do produto:");
+//		double valorVenda =sc.nextDouble();
+//		Produtos newprod = new Produtos(0, descricao, unid, qtd, valorCompra, valorVenda);
 //		produtosDao.insert(newprod);
-//		System.out.println("Inserted! New id = " + newprod.getId());
-//	
-//		System.out.println("\n=== TEST 5: seller update =====");
-//		produtos = produtosDao.findById(3);
-//		produtos.setDescricao("carro");
-//		produtosDao.update(produtos);
-//		System.out.println("Update completed");
-//		
-//		
-//		System.out.println("\n=== TEST 6: seller delete =====");
-//		System.out.println("Enter id for delete test: ");
-//		int id = sc.nextInt();
-//		produtosDao.deleteById(id);
-//		System.out.println("Delete completed");
-//		
-//		sc.close();
-//	}
-//
-//}
+//		System.out.println("Inserido! Novo id = " + newprod.getId());
+//		System.out.println("Deseja inserir outro produto? s/n: ");
+//		n = sc.next().charAt(0);
+//			
+//		}
+		n = 's';
+		while (n == 's') {
+			System.out.println("CONSULTA DE PRODUTOS: ");
+			System.out.println("Digite o codigo do produto para consulta: ");
+			int c = sc.nextInt();
+			while (produtosDao.findById(c) == null) {
+				System.out.println("Produto não encontrado, digite outro código: ");
+				c = sc.nextInt();
+			}
+
+			Produtos produtos = produtosDao.findById(c);
+			System.out.println(produtos);
+			System.out.println("Deseja consultar outro produto? s/n: ");
+			n = sc.next().charAt(0);
+
+		}
+
+		n = 's';
+		while (n == 's') {
+			System.out.println("ALTERAÇÃO DE PRODUTOS:");
+			System.out.println("Digite o codigo do produto para consulta: ");
+			int c = sc.nextInt();
+			while (produtosDao.findById(c) == null) {
+				System.out.println("Produto não encontrado, digite outro código: ");
+				c = sc.nextInt();
+			}
+			Produtos produtos = produtosDao.findById(c);
+			System.out.println("Digite a descrição do produto:");
+			String descricao = sc.nextLine();
+			sc.nextLine();
+			System.out.println("Digite a unidade de medida do produto:");
+			String unid = sc.nextLine();
+			System.out.println("Digite a quantidade em estoque do produto:");
+			int qtd = sc.nextInt();
+			System.out.println("Digite o valor de compra do produto:");
+			double valorCompra = sc.nextDouble();
+			System.out.println("Digite o valor de venda do produto:");
+			double valorVenda = sc.nextDouble();
+
+			produtos.setDescricao(descricao);
+			produtos.setUnid(unid);
+			produtos.setQtd(qtd);
+			produtos.setPreccompra(valorCompra);
+			produtos.setPrecvenda(valorVenda);
+			produtosDao.update(produtos);
+			System.out.println("Update completed");
+			System.out.println("Deseja alterar outro produto? s/n: ");
+			n = sc.next().charAt(0);
+		}
+
+		n = 's';
+		while (n == 's') {
+			System.out.println("DELETAR PRODUTOS:");
+			System.out.println("Digite o código do produto a deletar: ");
+			int id = sc.nextInt();
+			while (produtosDao.findById(id) == null) {
+				System.out.println("Produto não encontrado, digite outro código: ");
+				id = sc.nextInt();
+			}
+			produtosDao.deleteById(id);
+			System.out.println("Delete completed");
+			System.out.println("Deseja deletar outro produto? s/n: ");
+			n = sc.next().charAt(0);
+		}
+
+		System.out.println("Fim do Programa!");
+		sc.close();
+
+	}
+
+}
