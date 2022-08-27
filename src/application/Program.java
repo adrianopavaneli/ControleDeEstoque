@@ -13,28 +13,7 @@ public class Program {
 		ProdutosDao produtosDao = DaoFactory.createProdutosDao();
 
 		char n = 's';
-//		while(n == 's') {
-//			
-//		System.out.println("INSERIR PRODUTO:");
-//		System.out.println("Digite a descrição do produto:");
-//		
-//		String descricao =sc.nextLine();
-//		sc.nextLine();
-//		System.out.println("Digite a unidade de medida do produto:");
-//		String unid =sc.nextLine();
-//		System.out.println("Digite a quantidade em estoque do produto:");
-//		int qtd =sc.nextInt();
-//		System.out.println("Digite o valor de compra do produto:");
-//		double valorCompra =sc.nextDouble();
-//		System.out.println("Digite o valor de venda do produto:");
-//		double valorVenda =sc.nextDouble();
-//		Produtos newprod = new Produtos(0, descricao, unid, qtd, valorCompra, valorVenda);
-//		produtosDao.insert(newprod);
-//		System.out.println("Inserido! Novo id = " + newprod.getId());
-//		System.out.println("Deseja inserir outro produto? s/n: ");
-//		n = sc.next().charAt(0);
-//			
-//		}
+
 		n = 's';
 		while (n == 's') {
 			System.out.println("CONSULTA DE PRODUTOS: ");
