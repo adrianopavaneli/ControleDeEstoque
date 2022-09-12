@@ -17,5 +17,5 @@ Criação de uma aplicação simples para controle de estoque utilizando banco d
 ## Apresentação
 
 Abaixo esta apresentação da aplicação onde, se faz consulta, alteraçao e exclusao dos produtos
-<img src="https://github.com/adrianopavaneli/Barbearia-Agendamento/blob/main/src/view/imagens/agendamentoprint.jpg" alt="drawing" width="700"/>
+<img src="https://github.com/adrianopavaneli/ControleDeEstoque/blob/main/imagens/programa.jpg" alt="drawing" width="700"/>
 
